@@ -1,52 +1,46 @@
 import React, { Component } from 'react';
 import './App.css';
-import Particles from 'react-particles-js';
-import Task1 from './Task1';
-import Task2 from './Task2';
-import Task3 from './Task3';
-import Task4 from './Task4';
-import Task5 from './Task5';
-import Task6 from './Task6';
-import 'tachyons';
+import Particles from 'react-particles-js'; //Particles.js library fro rendering paricle background
+import Taskoptions from './components/Taskoptions/Taskoptions';
+import Taskdisplay from './components/Taskdisplay/Taskdisplay';
+import 'tachyons';     //CSS Toolkit Library 
 
-const particlesOptions={
-  
-                particles: {
-                  number:{
-                    value:80,
-                    density:{
-                    enable:true,
-                    value_area:900
-                    
-                  }
-                }
-              }
-            }
-
-
-
-
-
-
-
+const particlesOptions={     // Defining the options for the particles library to be given as props
+  particles: {
+    number:{
+      value:80,
+      density:{
+      enable:true,
+      value_area:900
+      }  
+    }
+  }
+}
 
 
 class App extends Component {
+constructor(props){
+    super(props);
+    this.state={
+      isTask:'task1'
+        
+    }
+  }
 
-
+onDisplay=(task_number)=>{
+  this.setState({isTask: task_number})
+}
 
   render() {
     return (
       <div className="App">
-        <p>Hello world!</p>
         <Particles className='particles' params={particlesOptions} />
-        <Task1 />
-        <Task2 />
-        <Task3 />
-        <Task4 />
-        <Task5 />
-        <Task6 />
-      </div>
+          <div className='w-80 center'>
+            <h1 className='mt3 pv3 navbackground'>Mapsted Corporation Interview Task</h1>
+          </div> 
+          <Taskoptions onDisplay={this.onDisplay} />
+          <Taskdisplay isTask={this.state.isTask}/>
+        </div>
     );
   }
 }

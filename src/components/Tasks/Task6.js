@@ -37,15 +37,10 @@ highestPurchaseCost=(data)=>{
       	}))
     })
     
-    console.log(array)
   	const purchaseCostArray = array.map((num,i)=>{
-  		console.log(num)
-  	})
-
-
-
-
-  	this.setState({highestPurchaseCost:count})
+  	 console.log(num)
+    })
+ 	this.setState({highestPurchaseCost:count})
 	return true;	
 }
 
