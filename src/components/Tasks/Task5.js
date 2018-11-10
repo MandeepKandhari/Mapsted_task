@@ -56,8 +56,9 @@ fetch('http://interview.mapsted.com/RnD/test-analytics.json')
 
 render() {
     return (
-      <div className="">
-        <p>Total Purchase cost in United States <span>{this.state.totalPurchaseCost}</span></p> 
+      <div className="flex flex-wrap justify-center">
+        <p className='w-80 ph2'>Total Purchase cost in United States :</p>
+        <p className='w-80 ph2'>{this.state.totalPurchaseCost}</p> 
       </div>
     );
   }
