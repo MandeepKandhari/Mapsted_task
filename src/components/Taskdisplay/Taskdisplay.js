@@ -27,9 +27,13 @@ class Taskdisplay extends Component{
 						purchaseCost={this.props.purchaseCost}
 						/>
 						:(this.props.isTask === 'task4'
-							?<Task4 />
+							?<Task4
+							data={this.props.data}
+							/>
 							:(this.props.isTask === 'task5'
-								?<Task5 />
+								?<Task5
+								data={this.props.data}
+								/>
 								:null
 				))))
 			}

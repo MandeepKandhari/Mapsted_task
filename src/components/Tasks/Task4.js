@@ -4,21 +4,20 @@ class Task4 extends Component {
 constructor(){
   super();
   this.state={
-    data:[],
     totalPurchaseCost:''
   }
 }
 
 componentDidMount(){
-let data = [];
-fetch('http://interview.mapsted.com/RnD/test-buildings.json')
+let buildingData = [];
+fetch('http://interview.mapsted.com/RnD/test-buildings.json')			//making the network calls for fetching the building.json information
 .then(response=>response.json())
-.then(data=>{
- data = data.filter(num=>{
-      return(num.state === 'Ontario' )
+.then(buildingData=>{
+ buildingData = buildingData.filter(num=>{
+      return(num.state === 'Ontario' )									//filtering the data array to obtain only the data related to Ontario
     })
 
-const building_id = data.map(num=>{
+const building_id = buildingData.map(num=>{
 		return(num.building_id)
 	})
  this.totalPurchaseCost(building_id)
@@ -29,18 +28,15 @@ const building_id = data.map(num=>{
 
 totalPurchaseCost=(building_id)=>{
 let buildings = [];
-fetch('http://interview.mapsted.com/RnD/test-analytics.json')
-.then(response=>response.json())
-.then(products=>{
 	let totalPurchaseCost = 0;
-	const purchaseCost =building_id.map(id=>{
-		products.map((num,i)=>{
-		return(num.usage_statistics.session_infos.map((num,i)=>{
+	const purchaseCost =building_id.map(id=>{			//looping through the building.json data
+		this.props.data.map((num,i)=>{
+		return(num.usage_statistics.session_infos.map((num,i)=>{		
 			if(num.building_id === id ){
 				const building_cost = num.purchases.map(num=>{
 					return(num.cost)
 				})
-			const cost = building_cost.reduce((accumulator, num)=>{
+			const cost = building_cost.reduce((accumulator, num)=>{		//reducing the array into a single value by adding all the indexed values 
 					return(accumulator + num)
 				})
 			totalPurchaseCost= totalPurchaseCost + cost
@@ -50,7 +46,6 @@ fetch('http://interview.mapsted.com/RnD/test-analytics.json')
 		})
 	let totalCost = totalPurchaseCost.toFixed(2);
 	this.setState({totalPurchaseCost:totalCost})
-	})
 	
 }
 

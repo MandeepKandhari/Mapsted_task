@@ -26,10 +26,9 @@ const initialState = {
 }
 
 
-
 class App extends Component {
-constructor(props){
-    super(props);
+constructor(){
+    super();
     this.state= initialState
   }
 
@@ -42,33 +41,31 @@ fetch('http://interview.mapsted.com/RnD/test-analytics.json')
 
 
 onTask1=()=>{
-const data = this.state.data.filter(num=>{
+const filteredArray = this.state.data.filter(num=>{       //filtering the analytics.json to get the data related to the Samsung manufacturers
       return(num.manufacturer === 'Samsung' )
     })
- this.totalCost(data)
+ this.totalSamsungDeviceCost(filteredArray)
 }
 
-totalCost=(data)=>{         //task1
-  let totalCost = 0;
-  let totalCostArray = [];
-  let purchasesObject = {};
-  const array = data.map((num,i)=>{
+totalSamsungDeviceCost=(filteredArray)=>{         //task1
+  let totalDeviceCost = 0;
+  const array = filteredArray.map((num,i)=>{       // looping through the filtered array to get the cost of each samsung manufactured devices
     return(num.usage_statistics.session_infos.map((nums,i)=>{
       return(nums.purchases.map(num=>{
-        totalCost = totalCost + num.cost
-      })
-    )
-  })
+        totalDeviceCost = totalDeviceCost + num.cost
+        })
+      )
+    })
   )
 })
-let cost = totalCost.toFixed(2)
-this.setState({cost:cost})
-return(cost)
+let deviceCost = totalDeviceCost.toFixed(2)
+this.setState({cost:deviceCost})
+return(deviceCost)
 }
 
-purchaseNumber=(data)=>{      //task2
+idPurchaseCount=(itemIdArray)=>{      //task2
   let count = 0;
-    const array = data.map((num,i)=>{
+    const array = itemIdArray.map((num,i)=>{                      //looping through the array to count the number of items with id = 47
       return(num.usage_statistics.session_infos.map((num,i)=>{
         return(num.purchases.map((num,i)=>{
           if(num.item_id === 47)
@@ -78,24 +75,23 @@ purchaseNumber=(data)=>{      //task2
         }))
       }))
     })
-   
-    this.setState({itemCount:count})
+  this.setState({itemCount:count})
   return true;
 }
 
-purchaseCost=(data)=>{
-  let totalCost = 0;
+categoryPurchaseCost=(data)=>{      //task3
+  let categoryPurchaseCost = 0;
     const array = data.map((num,i)=>{
       return(num.usage_statistics.session_infos.map((num,i)=>{
         return(num.purchases.map((num,i)=>{
           if(num.item_category_id ===7){
-            totalCost = totalCost + num.cost
+            categoryPurchaseCost = categoryPurchaseCost + num.cost
           } 
         }))
       }))
     })
-  let cost = totalCost.toFixed(2)
-  this.setState({purchaseCost:cost})
+  let totalCategorycost = categoryPurchaseCost.toFixed(2)
+  this.setState({purchaseCost:totalCategorycost})
   return true;
 }
 
@@ -105,12 +101,12 @@ onDisplay=(task_number)=>{
     this.onTask1()
   }
   else if(task_number === 'task2'){
-    this.purchaseNumber(this.state.data)
+    this.idPurchaseCount(this.state.data)
   }
   else if(task_number === 'task3'){
-    this.purchaseCost(this.state.data)
+    this.categoryPurchaseCost(this.state.data)
   }
-  this.setState({isTask: task_number})  //Selecting which task to render
+  this.setState({isTask: task_number})  //Selecting which task to render between task1 to task5
 }
 
 onInitialStageClick = ()=>{       //Initializing the webpage
@@ -130,6 +126,7 @@ onInitialStageClick = ()=>{       //Initializing the webpage
           onInitialStageClick={this.onInitialStageClick}
           />
           <Taskdisplay 
+          data={this.state.data}
           isTask={this.state.isTask}
           cost={this.state.cost}
           itemCount={this.state.itemCount}
